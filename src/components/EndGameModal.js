@@ -36,11 +36,53 @@ export const EndGameModal = ({
     )
   }
 
+  function GetDefinition() {
+    const [error, setError] = useState(null)
+    const [isLoaded, setIsLoaded] = useState(false)
+    const [items, setItems] = useState([])
+
+    useEffect(() => {
+      const urlApi = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + answer
+      fetch(urlApi)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setIsLoaded(true)
+            setItems(result)
+            console.log('URL  > ' + urlApi)
+            console.log(result)
+          },
+          (error) => {
+            setIsLoaded(true)
+            setError(error)
+          }
+        )
+    }, [])
+
+    if (error) {
+      return <div>Error: {error.message}</div>
+    } else if (!isLoaded) {
+      return <div>Loading...</div>
+    } else {
+      return (
+        <>
+          {items.map((item, i) => (
+            <ul>
+              <li key={i}>
+                <i>Word:</i> <strong>{item.word}</strong>
+              </li>
+            </ul>
+          ))}
+        </>
+      )
+    }
+  }
+
   function getOccurrence(array, value) {
     var count = 0
     if (array) {
-      for (let i=0; i<array.length; i++) {
-        if (array[i].state == value) {
+      for (let i = 0; i < array.length; i++) {
+        if (array[i].state === value) {
           count += 1
         }
       }
@@ -66,7 +108,7 @@ export const EndGameModal = ({
         onClick={() => {
           setButtonPressed(true)
           navigator.clipboard.writeText(
-            `Wordle ${day} ${gameState === state.won ? currentRow: 'X'}/6\n\n` +
+            `Wordle ${day} ${gameState === state.won ? currentRow : 'X'}/6\n\n` +
               cellStatuses
                 .map((row) => {
                   if (row.every((item) => item !== status.unguessed)) {
@@ -77,8 +119,7 @@ export const EndGameModal = ({
                             case status.gray:
                               if (darkMode) {
                                 return '⬛'
-                              }
-                              else {
+                              } else {
                                 return '⬜'
                               }
                             case status.green:
@@ -114,30 +155,25 @@ export const EndGameModal = ({
         <div className="h-full flex flex-col items-center justify-center max-w-[300px] mx-auto text-primary dark:text-primary-dark">
           {gameState === state.won && (
             <>
-              <img src={Success} alt="success" height="auto" width="auto" />
+              <img src={Success} alt="success" height="auto" width="20%" />
               <h1 className=" text-3xl">Congrats!</h1>
-              <p className="mt-3 text-2xl">
-                Won: {wins}
-              </p>
-              <p className="mt-3 text-2xl">
-                Lost: {losses}
-              </p>
+              <div>{GetDefinition(answer)}</div>
+
+              <p className="mt-3 text-2xl">Won: {wins}</p>
+              <p className="mt-3 text-2xl">Lost: {losses}</p>
             </>
           )}
           {gameState === state.lost && (
             <>
-              <img src={Fail} alt="success" height="auto" width="80%" />
+              <img src={Fail} alt="success" height="auto" width="20%" />
               <div className="text-primary dark:text-primary-dark text-4xl text-center">
                 <p>Oops!</p>
                 <p className="mt-3 text-2xl">
                   The word was <strong>{answer}</strong>
                 </p>
-                <p className="mt-3 text-2xl">
-                  Won: {wins}
-                </p>
-                <p className="mt-3 text-2xl">
-                  Lost: {losses}
-                </p>
+                <div>{GetDefinition(answer)}</div>
+                <p className="mt-3 text-2xl">Won: {wins}</p>
+                <p className="mt-3 text-2xl">Lost: {losses}</p>
               </div>
             </>
           )}
@@ -145,12 +181,8 @@ export const EndGameModal = ({
             <>
               <img src={WIP} alt="keep playing" height="auto" width="80%" />
               <div className="text-primary dark:text-primary-dark text-4xl text-center">
-                <p className="mt-3 text-2xl">
-                  Won: {wins}
-                </p>
-                <p className="mt-3 text-2xl">
-                  Lost: {losses}
-                </p>
+                <p className="mt-3 text-2xl">Won: {wins}</p>
+                <p className="mt-3 text-2xl">Lost: {losses}</p>
               </div>
             </>
           )}

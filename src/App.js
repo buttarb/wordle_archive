@@ -238,7 +238,7 @@ function App() {
 
   useEffect(() => {
     const jsonGameStateList = localStorage.getItem('gameStateList');
-    if (jsonGameStateList == null) {
+    if (jsonGameStateList === null) {
       setGameStateList(gameStateList)
     } else {
       const gameStateList = JSON.parse(jsonGameStateList);
@@ -513,23 +513,23 @@ function App() {
   }
 
   var tempGameStateList = JSON.parse(localStorage.getItem('gameStateList'))
-  if (tempGameStateList == null) {
+  if (tempGameStateList === null) {
     setGameStateList(gameStateList)
     tempGameStateList = gameStateList
   }
   for (var i=4;i<=og_day+3;i++) {
     var textNumber = document.getElementById('headlessui-menu-item-'+i)
     if(textNumber != null) {
-      if (tempGameStateList[i-1].state == state.won) {
+      if (tempGameStateList[i-1].state === state.won) {
         textNumber.classList.add('green-text');
       }
-      if (tempGameStateList[i-1].state == state.lost) {
+      if (tempGameStateList[i-1].state === state.lost) {
         textNumber.classList.add('red-text');
       }
     }
   }
 
-  var header_symbol = (tempGameStateList[day-1].state == 'won') ? ('✔') : ((tempGameStateList[day-1].state == 'lost') ? ('✘') : '')
+  var header_symbol = (tempGameStateList[day-1].state === 'won') ? ('✔') : ((tempGameStateList[day-1].state === 'lost') ? ('✘') : '')
 
   var elements = items_list.map(i => {
     return (
@@ -543,7 +543,7 @@ function App() {
               'flex justify-between block px-4 py-2 text-sm w-full',
             )}>
                 <span>
-                  {i+(tempGameStateList[i-1].state == state.won ? ' ✔' : tempGameStateList[i-1].state == state.lost ? ' ✘' : '')}
+                  {i+(tempGameStateList[i-1].state === state.won ? ' ✔' : tempGameStateList[i-1].state === state.lost ? ' ✘' : '')}
                 </span>
                 <span>
                   {calculateScore(i)}
@@ -555,7 +555,7 @@ function App() {
     );
   });
 
-  if (darkMode == true) {
+  if (darkMode === true) {
     var html = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
     html.setAttribute( 'class', 'dark-bg' );
   }
