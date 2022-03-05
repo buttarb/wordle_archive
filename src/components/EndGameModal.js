@@ -66,10 +66,21 @@ export const EndGameModal = ({
     } else {
       return (
         <>
-          {items.map((item, i) => (
-            <ul>
-              <li key={i}>
-                <i>Word:</i> <strong>{item.word}</strong>
+          {items.map((levelOneJson, a) => (
+            <ul key={levelOneJson.word}>
+              <li>
+                {levelOneJson.meanings.map((levelTwoJson) => (
+                  <ul key={levelTwoJson.partOfSpeech}>
+                    <li>
+                      <strong>{levelOneJson.word}</strong> ({levelTwoJson.partOfSpeech})
+                      {levelTwoJson.definitions.map((levelThreeJson) => (
+                        <ul key={levelThreeJson.definition}>
+                          <li> * {levelThreeJson.definition}</li>
+                        </ul>
+                      ))}
+                    </li>
+                  </ul>
+                ))}
               </li>
             </ul>
           ))}
