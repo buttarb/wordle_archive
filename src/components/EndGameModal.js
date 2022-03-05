@@ -177,11 +177,12 @@ export const EndGameModal = ({
           {gameState === state.lost && (
             <>
               <img src={Fail} alt="success" height="auto" width="20%" />
-              <div className="text-primary dark:text-primary-dark text-4xl text-center">
+              <div>
                 <p>Oops!</p>
-                <p className="mt-3 text-2xl">
+                <p>
                   The word was <strong>{answer}</strong>
                 </p>
+
                 <div>{GetDefinition(answer)}</div>
                 <p className="mt-3 text-2xl">Won: {wins}</p>
                 <p className="mt-3 text-2xl">Lost: {losses}</p>
